@@ -1,0 +1,46 @@
+using WPR.Core.Domains.Users.Interfaces;
+using WPR.Core.Domains.Users.Models;
+using WPR.Core.UnitsOfWork;
+
+namespace WPR.Core.Domains.Users.Services;
+
+public class UserManager : IUserManager
+{
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserRepository _userRepository;
+
+    public UserManager(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    {
+        _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
+    }
+
+    public User GetById(Guid id)
+    {
+        return _userRepository.GetById(id);
+    }
+
+    public User GetByTag(string tag)
+    {
+        return _userRepository.GetByTag(tag);
+    }
+
+    public Guid Create(User user)
+    {
+        var id = _userRepository.Create(user);
+        _unitOfWork.SaveChanges();
+        return id;
+    }
+
+    public void Update(User user)
+    {
+        _userRepository.Update(user);
+        _unitOfWork.SaveChanges();
+    }
+
+    public void DeleteById(Guid id)
+    {
+        _userRepository.DeleteById(id);
+        _unitOfWork.SaveChanges();
+    }
+}
