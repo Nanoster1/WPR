@@ -4,12 +4,12 @@ using WPR.Core.Domains.Links.Interfaces;
 using WPR.Core.Domains.Links.Models;
 using WPR.Core.Domains.Projects.Interfaces;
 using WPR.Core.Domains.Users.Interfaces;
-using WPR.Dto.Links;
-using WPR.Dto.Projects;
+using WPR.Web.Dto.Links;
+using WPR.Web.Dto.Projects;
 
-namespace WPR.Controllers;
+namespace WPR.Web.Controllers;
 
-[Route("/api/[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class ProjectController : ControllerBase
 {
@@ -17,8 +17,7 @@ public class ProjectController : ControllerBase
     private readonly IProjectManager _projectManager;
     private readonly IUserManager _userManager;
 
-    public ProjectController(IProjectManager projectManager, ICommentManager commentManager, ILinkManager linkManager,
-        IUserManager userManager)
+    public ProjectController(IProjectManager projectManager, ILinkManager linkManager, IUserManager userManager)
     {
         _projectManager = projectManager;
         _linkManager = linkManager;

@@ -28,7 +28,7 @@ public class ProjectRepository : IProjectRepository
         };
     }
 
-    public IList<Project> GetByUserId(Guid id)
+    public Project[] GetByUserId(Guid id)
     {
         return _context.Projects
             .AsNoTracking()
@@ -42,7 +42,7 @@ public class ProjectRepository : IProjectRepository
                 LongDesc = model.LongDesc,
                 ShortDesc = model.ShortDesc
             })
-            .ToList();
+            .ToArray();
     }
 
     public Guid Create(Project project)

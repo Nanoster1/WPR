@@ -1,4 +1,4 @@
-namespace WPR.Dto.Comments;
+namespace WPR.Web.Dto.Comments;
 
 public record CommentDto
 (

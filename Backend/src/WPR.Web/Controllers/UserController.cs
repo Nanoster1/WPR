@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using WPR.Core.Domains.Users.Interfaces;
 using WPR.Core.Domains.Users.Models;
-using WPR.Dto.Users;
+using WPR.Web.Dto.Users;
 
-namespace WPR.Controllers;
+namespace WPR.Web.Controllers;
 
-[Route("/api/[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
 {
@@ -42,7 +42,7 @@ public class UserController : ControllerBase
             Login = model.Login,
             Tag = model.Tag
         };
-        return _userManager.Create(user);
+        return _userManager.Create(user, model.Password);
     }
 
     /// <summary>

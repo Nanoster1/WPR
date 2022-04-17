@@ -1,3 +1,5 @@
+using System.Reflection;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using WPR.Core.Domains.Comments.Interfaces;
 using WPR.Core.Domains.Comments.Services;
@@ -7,7 +9,6 @@ using WPR.Core.Domains.Projects.Interfaces;
 using WPR.Core.Domains.Projects.Services;
 using WPR.Core.Domains.Users.Interfaces;
 using WPR.Core.Domains.Users.Services;
-using WPR.Core.UnitsOfWork;
 
 namespace WPR.Core;
 
@@ -19,6 +20,8 @@ public static class Bootstrap
         services.AddScoped<IProjectManager, ProjectManager>();
         services.AddScoped<ILinkManager, LinkManager>();
         services.AddScoped<ICommentManager, CommentManager>();
+        services.AddScoped<IPasswordHashProvider, PasswordHashProvider>();
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         return services;
     }
 }

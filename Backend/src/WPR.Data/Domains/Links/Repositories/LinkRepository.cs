@@ -27,7 +27,7 @@ public class LinkRepository : ILinkRepository
         };
     }
 
-    public IList<Link> GetByProjectId(Guid id)
+    public Link[] GetByProjectId(Guid id)
     {
         return _context.Links
             .AsNoTracking()
@@ -40,7 +40,7 @@ public class LinkRepository : ILinkRepository
                 ProjectId = model.ProjectId,
                 Type = model.Type
             })
-            .ToList();
+            .ToArray();
     }
 
     public Guid Create(Link link)
@@ -57,7 +57,7 @@ public class LinkRepository : ILinkRepository
         return model.Id;
     }
 
-    public IList<Guid> Create(IEnumerable<Link> links)
+    public Guid[] Create(Link[] links)
     {
         var models = links.Select(link => new LinkDbModel
         {
@@ -67,7 +67,7 @@ public class LinkRepository : ILinkRepository
             ProjectId = link.ProjectId
         }).ToList();
         _context.Links.AddRange(models);
-        return models.Select(model => model.Id).ToList();
+        return models.Select(model => model.Id).ToArray();
     }
 
     public void Update(Link link)
@@ -78,11 +78,11 @@ public class LinkRepository : ILinkRepository
         model.ProjectId = link.ProjectId;
     }
 
-    public void Update(IEnumerable<Link> links)
+    public void Update(Link[] links)
     {
         foreach (var link in links)
         {
-            var model = GetModelById(link.Id);
+            var model = GetModelById(link.Id, true);
             model.Title = link.Title;
             model.Type = link.Type;
             model.Url = link.Url;
@@ -95,11 +95,29 @@ public class LinkRepository : ILinkRepository
         _context.Remove(model);
     }
 
+    public void DeleteManyById(Guid[] ids)
+    {
+        var models = GetModelsById(ids);
+        _context.Links.RemoveRange(models);
+    }
+
     private LinkDbModel GetModelById(Guid id, bool isTracking = false)
     {
         var model = isTracking
             ? _context.Links.FirstOrDefault(dbModel => dbModel.Id == id)
             : _context.Links.AsNoTracking().FirstOrDefault(dbModel => dbModel.Id == id);
+
+        if (model == null)
+            throw new NullReferenceException();
+
+        return model;
+    }
+
+    private LinkDbModel[] GetModelsById(Guid[] ids, bool isTracking = false)
+    {
+        var model = isTracking
+            ? _context.Links.Where(dbModel => ids.Contains(dbModel.Id)).ToArray()
+            : _context.Links.AsNoTracking().Where(dbModel => ids.Contains(dbModel.Id)).ToArray();
 
         if (model == null)
             throw new NullReferenceException();
