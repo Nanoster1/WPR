@@ -1,3 +1,4 @@
+using FluentValidation;
 using WPR.Core.Domains.Links.Interfaces;
 using WPR.Core.Domains.Links.Models;
 using WPR.Core.Domains.Projects.Interfaces;
@@ -11,11 +12,14 @@ public class ProjectManager : IProjectManager
     private readonly ILinkManager _linkManager;
     private readonly IProjectRepository _projectRepository;
     private readonly IUnitOfWork _unitOfWork;
-
-    public ProjectManager(IUnitOfWork unitOfWork, IProjectRepository projectRepository)
+    private readonly ProjectValidator _projectValidator;
+    
+    public ProjectManager(IUnitOfWork unitOfWork, IProjectRepository projectRepository, ILinkManager linkManager, ProjectValidator projectValidator)
     {
         _unitOfWork = unitOfWork;
         _projectRepository = projectRepository;
+        _linkManager = linkManager;
+        _projectValidator = projectValidator;
     }
 
     public Project GetById(Guid id)
@@ -23,15 +27,29 @@ public class ProjectManager : IProjectManager
         return _projectRepository.GetById(id);
     }
 
-    public IList<Project> GetByUserId(Guid id)
+    public Project[] GetByUserId(Guid id)
     {
         return _projectRepository.GetByUserId(id);
     }
-
-    public void Update(Project project, IEnumerable<Link>? links)
+    
+    public Guid Create(Project project, Link[] links)
     {
+        _projectValidator.ValidateAndThrow(project);
+        _linkManager.Create(links);
+        var id = _projectRepository.Create(project);
+        _unitOfWork.SaveChanges();
+        return id;
+    }
+
+    public void Update(Project project, Link[] links)
+    {
+        _projectValidator.ValidateAndThrow(project);
+        var oldLinksIds = _linkManager.GetByProjectId(project.Id)
+            .Select(link => link.Id)
+            .ToArray();
+        _linkManager.DeleteManyById(oldLinksIds);
+        _linkManager.Create(links);
         _projectRepository.Update(project);
-        _linkManager.Update(links);
         _unitOfWork.SaveChanges();
     }
 
@@ -39,13 +57,5 @@ public class ProjectManager : IProjectManager
     {
         _projectRepository.DeleteById(id);
         _unitOfWork.SaveChanges();
-    }
-
-    public Guid Create(Project project, IEnumerable<Link>? links)
-    {
-        var id = _projectRepository.Create(project);
-        if (links != null) _linkManager.Create(links);
-        _unitOfWork.SaveChanges();
-        return id;
     }
 }

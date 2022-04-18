@@ -8,10 +8,12 @@ namespace WPR.Data.Domains.Users.Repositories;
 public class UserRepository : IUserRepository
 {
     private readonly WprDbContext _context;
-
-    public UserRepository(WprDbContext context)
+    private readonly IPasswordHashProvider _passwordHashProvider;
+    
+    public UserRepository(WprDbContext context, IPasswordHashProvider passwordHashProvider)
     {
         _context = context;
+        _passwordHashProvider = passwordHashProvider;
     }
 
     public User GetById(Guid id)
@@ -56,13 +58,16 @@ public class UserRepository : IUserRepository
         _context.Users.Remove(model);
     }
 
-    public Guid Create(User user)
+    public Guid Create(User user, string password)
     {
+        var (hash, salt) = _passwordHashProvider.CreateHash(password); 
         var model = new UserDbModel
         {
             Login = user.Login,
             Email = user.Email,
-            Tag = user.Tag
+            Tag = user.Tag,
+            PasswordHash = hash,
+            Salt = salt
         };
         _context.Users.Add(model);
         return model.Id;

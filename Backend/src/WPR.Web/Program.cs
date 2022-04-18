@@ -1,6 +1,6 @@
 using WPR.Core;
 using WPR.Data;
-using WPR.Swagger;
+using WPR.Web.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 

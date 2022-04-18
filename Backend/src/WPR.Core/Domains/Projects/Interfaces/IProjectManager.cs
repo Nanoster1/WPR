@@ -6,8 +6,8 @@ namespace WPR.Core.Domains.Projects.Interfaces;
 public interface IProjectManager
 {
     Project GetById(Guid id);
-    IList<Project> GetByUserId(Guid id);
-    Guid Create(Project project, IEnumerable<Link>? links);
-    void Update(Project project, IEnumerable<Link>? links);
+    Project[] GetByUserId(Guid id);
+    Guid Create(Project project, Link[] links);
+    void Update(Project project, Link[] links);
     void DeleteById(Guid id);
 }

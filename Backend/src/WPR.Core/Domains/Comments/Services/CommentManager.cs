@@ -1,3 +1,4 @@
+using FluentValidation;
 using WPR.Core.Domains.Comments.Interfaces;
 using WPR.Core.Domains.Comments.Models;
 using WPR.Core.UnitsOfWork;
@@ -8,11 +9,13 @@ public class CommentManager : ICommentManager
 {
     private readonly ICommentRepository _commentRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly CommentValidator _commentValidator;
 
-    public CommentManager(ICommentRepository commentRepository, IUnitOfWork unitOfWork)
+    public CommentManager(ICommentRepository commentRepository, IUnitOfWork unitOfWork, CommentValidator commentValidator)
     {
         _commentRepository = commentRepository;
         _unitOfWork = unitOfWork;
+        _commentValidator = commentValidator;
     }
 
     public Comment GetById(Guid id)
@@ -20,18 +23,19 @@ public class CommentManager : ICommentManager
         return _commentRepository.GetById(id);
     }
 
-    public IList<Comment> GetByAuthorId(Guid id)
+    public Comment[] GetByAuthorId(Guid id)
     {
         return _commentRepository.GetByAuthorId(id);
     }
 
-    public IList<Comment> GetByProjectId(Guid id)
+    public Comment[] GetByProjectId(Guid id)
     {
         return _commentRepository.GetByProjectId(id);
     }
 
     public Guid Create(Comment comment)
     {
+        _commentValidator.Validate(comment);
         var id = _commentRepository.Create(comment);
         _unitOfWork.SaveChanges();
         return id;
@@ -39,6 +43,7 @@ public class CommentManager : ICommentManager
 
     public void Update(Comment comment)
     {
+        _commentValidator.ValidateAndThrow(comment);
         _commentRepository.Update(comment);
         _unitOfWork.SaveChanges();
     }
@@ -51,9 +56,10 @@ public class CommentManager : ICommentManager
 
     public void UpdateContentById(Guid id, string content)
     {
-        var model = _commentRepository.GetById(id);
-        model.Content = content;
-        _commentRepository.Update(model);
+        var comment = _commentRepository.GetById(id);
+        comment.Content = content;
+        _commentValidator.ValidateAndThrow(comment);
+        _commentRepository.Update(comment);
         _unitOfWork.SaveChanges();
     }
 }

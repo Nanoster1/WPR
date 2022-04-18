@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPR.Data", "WPR.Data\WPR.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPR.Migrations", "WPR.Migrations\WPR.Migrations.csproj", "{2AB2547A-3AA6-4EA2-9198-607B18E0B0DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPR", "WPR\WPR.csproj", "{80134BF8-E3B5-4250-A603-9DBFC9AAEBF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPR.Web", "WPR.Web\WPR.Web.csproj", "{80134BF8-E3B5-4250-A603-9DBFC9AAEBF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

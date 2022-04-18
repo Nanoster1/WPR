@@ -1,4 +1,4 @@
-namespace WPR.Dto.Links;
+namespace WPR.Web.Dto.Links;
 
 public record PrLinkDto
 (

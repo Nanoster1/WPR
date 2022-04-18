@@ -12,8 +12,8 @@ using WPR.Data;
 namespace WPR.Migrations.Migrations
 {
     [DbContext(typeof(WprDbContext))]
-    [Migration("20220413140727_AddDescsInProject")]
-    partial class AddDescsInProject
+    [Migration("20220416094959_AddPasswordInUser")]
+    partial class AddPasswordInUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace WPR.Migrations.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("WPR.Web.Data.Domains.Comments.DbModels.CommentDbModel", b =>
+            modelBuilder.Entity("WPR.Data.Domains.Comments.DbModels.CommentDbModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace WPR.Migrations.Migrations
                     b.ToTable("comment", (string)null);
                 });
 
-            modelBuilder.Entity("WPR.Web.Data.Domains.Links.DbModels.LinkDbModel", b =>
+            modelBuilder.Entity("WPR.Data.Domains.Links.DbModels.LinkDbModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,7 +94,7 @@ namespace WPR.Migrations.Migrations
                     b.ToTable("link", (string)null);
                 });
 
-            modelBuilder.Entity("WPR.Web.Data.Domains.Projects.DbModels.ProjectDbModel", b =>
+            modelBuilder.Entity("WPR.Data.Domains.Projects.DbModels.ProjectDbModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,7 +133,7 @@ namespace WPR.Migrations.Migrations
                     b.ToTable("project", (string)null);
                 });
 
-            modelBuilder.Entity("WPR.Web.Data.Domains.Users.DbModels.UserDbModel", b =>
+            modelBuilder.Entity("WPR.Data.Domains.Users.DbModels.UserDbModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -150,6 +150,16 @@ namespace WPR.Migrations.Migrations
                         .HasColumnType("text")
                         .HasColumnName("login");
 
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("password_hash");
+
+                    b.Property<byte[]>("Salt")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("salt");
+
                     b.Property<string>("Tag")
                         .IsRequired()
                         .HasColumnType("text")
@@ -164,16 +174,16 @@ namespace WPR.Migrations.Migrations
                     b.ToTable("user", (string)null);
                 });
 
-            modelBuilder.Entity("WPR.Web.Data.Domains.Comments.DbModels.CommentDbModel", b =>
+            modelBuilder.Entity("WPR.Data.Domains.Comments.DbModels.CommentDbModel", b =>
                 {
-                    b.HasOne("WPR.Web.Data.Domains.Users.DbModels.UserDbModel", null)
+                    b.HasOne("WPR.Data.Domains.Users.DbModels.UserDbModel", null)
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_comment_users_user_db_model_id");
 
-                    b.HasOne("WPR.Web.Data.Domains.Projects.DbModels.ProjectDbModel", null)
+                    b.HasOne("WPR.Data.Domains.Projects.DbModels.ProjectDbModel", null)
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -181,9 +191,9 @@ namespace WPR.Migrations.Migrations
                         .HasConstraintName("fk_comment_projects_project_db_model_id");
                 });
 
-            modelBuilder.Entity("WPR.Web.Data.Domains.Links.DbModels.LinkDbModel", b =>
+            modelBuilder.Entity("WPR.Data.Domains.Links.DbModels.LinkDbModel", b =>
                 {
-                    b.HasOne("WPR.Web.Data.Domains.Projects.DbModels.ProjectDbModel", null)
+                    b.HasOne("WPR.Data.Domains.Projects.DbModels.ProjectDbModel", null)
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -191,9 +201,9 @@ namespace WPR.Migrations.Migrations
                         .HasConstraintName("fk_link_projects_project_db_model_id");
                 });
 
-            modelBuilder.Entity("WPR.Web.Data.Domains.Projects.DbModels.ProjectDbModel", b =>
+            modelBuilder.Entity("WPR.Data.Domains.Projects.DbModels.ProjectDbModel", b =>
                 {
-                    b.HasOne("WPR.Web.Data.Domains.Users.DbModels.UserDbModel", null)
+                    b.HasOne("WPR.Data.Domains.Users.DbModels.UserDbModel", null)
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)

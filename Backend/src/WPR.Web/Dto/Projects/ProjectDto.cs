@@ -1,6 +1,6 @@
-using WPR.Dto.Links;
+using WPR.Web.Dto.Links;
 
-namespace WPR.Dto.Projects;
+namespace WPR.Web.Dto.Projects;
 
 public record ProjectDto
 (

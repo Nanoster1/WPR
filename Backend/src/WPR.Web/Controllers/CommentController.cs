@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using WPR.Core.Domains.Comments.Interfaces;
 using WPR.Core.Domains.Comments.Models;
-using WPR.Dto.Comments;
+using WPR.Web.Dto.Comments;
 
-namespace WPR.Controllers;
+namespace WPR.Web.Controllers;
 
-[Route("/api/[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class CommentController : ControllerBase
 {

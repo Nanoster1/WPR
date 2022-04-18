@@ -1,4 +1,4 @@
-namespace WPR.Dto.Users;
+namespace WPR.Web.Dto.Users;
 
 public class UserRegistrationDto
 {

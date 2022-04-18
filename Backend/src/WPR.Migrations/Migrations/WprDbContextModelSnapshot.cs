@@ -148,6 +148,16 @@ namespace WPR.Migrations.Migrations
                         .HasColumnType("text")
                         .HasColumnName("login");
 
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("password_hash");
+
+                    b.Property<byte[]>("Salt")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("salt");
+
                     b.Property<string>("Tag")
                         .IsRequired()
                         .HasColumnType("text")
