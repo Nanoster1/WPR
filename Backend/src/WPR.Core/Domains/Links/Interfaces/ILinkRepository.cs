@@ -5,10 +5,11 @@ namespace WPR.Core.Domains.Links.Interfaces;
 public interface ILinkRepository
 {
     Link GetById(Guid id);
-    IList<Link> GetByProjectId(Guid id);
+    Link[] GetByProjectId(Guid id);
     Guid Create(Link link);
-    IList<Guid> Create(IEnumerable<Link> links);
+    Guid[] Create(Link[] links);
     void Update(Link link);
-    void Update(IEnumerable<Link> links);
+    void Update(Link[] links);
     void DeleteById(Guid id);
+    void DeleteManyById(Guid[] ids);
 }

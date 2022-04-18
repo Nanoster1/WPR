@@ -27,7 +27,7 @@ public class CommentRepository : ICommentRepository
         };
     }
 
-    public IList<Comment> GetByAuthorId(Guid id)
+    public Comment[] GetByAuthorId(Guid id)
     {
         return _context.Comments
             .AsNoTracking()
@@ -40,10 +40,10 @@ public class CommentRepository : ICommentRepository
                 CreatingDate = model.CreatingDate,
                 ProjectId = model.ProjectId
             })
-            .ToList();
+            .ToArray();
     }
 
-    public IList<Comment> GetByProjectId(Guid id)
+    public Comment[] GetByProjectId(Guid id)
     {
         return _context.Comments
             .AsNoTracking()
@@ -56,7 +56,7 @@ public class CommentRepository : ICommentRepository
                 CreatingDate = model.CreatingDate,
                 ProjectId = model.ProjectId
             })
-            .ToList();
+            .ToArray();
     }
 
     public Guid Create(Comment comment)

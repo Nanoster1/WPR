@@ -1,3 +1,4 @@
+using FluentValidation;
 using WPR.Core.Domains.Users.Interfaces;
 using WPR.Core.Domains.Users.Models;
 using WPR.Core.UnitsOfWork;
@@ -8,11 +9,15 @@ public class UserManager : IUserManager
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
-
-    public UserManager(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    private readonly UserValidator _userValidator;
+    private readonly PasswordValidator _passwordValidator;
+    
+    public UserManager(IUserRepository userRepository, IUnitOfWork unitOfWork, UserValidator userValidator, PasswordValidator passwordValidator)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _userValidator = userValidator;
+        _passwordValidator = passwordValidator;
     }
 
     public User GetById(Guid id)
@@ -25,15 +30,18 @@ public class UserManager : IUserManager
         return _userRepository.GetByTag(tag);
     }
 
-    public Guid Create(User user)
+    public Guid Create(User user, string password)
     {
-        var id = _userRepository.Create(user);
+        _userValidator.ValidateAndThrow(user);
+        _passwordValidator.ValidateAndThrow(password);
+        var id = _userRepository.Create(user, password);
         _unitOfWork.SaveChanges();
         return id;
     }
 
     public void Update(User user)
     {
+        _userValidator.ValidateAndThrow(user);
         _userRepository.Update(user);
         _unitOfWork.SaveChanges();
     }

@@ -1,7 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace WPR.Swagger;
+namespace WPR.Web.Swagger;
 
 public static class SwaggerConfiguration
 {
@@ -11,7 +11,7 @@ public static class SwaggerConfiguration
 
         options.SwaggerDoc("v1", new OpenApiInfo
         {
-            Title = "WPR",
+            Title = "WPR.Web",
             Description = "Веб платформа для размещения проектов, и их оценивания",
             Version = assemblyName.Version?.ToString(),
             Contact = new OpenApiContact
