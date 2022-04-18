@@ -1,0 +1,92 @@
+$mainColour: #05386B
+$foggyColour: #EDF5E1
+$shadow: #191970
+footer
+  margin: 0
+  position: static
+  display: block
+  background-color: $mainColour
+  color: $foggyColour
+  border-top-left-radius: 20px
+  border-top-right-radius: 20px
+  z-index: 10
+
+.footer-section
+  padding-left: 1.275rem
+  padding-right: 1.275rem
+  margin-bottom: 0.875rem
+
+.footer-tittle-text
+  font-size: 18px
+  font-weight: 600
+  font-family: 'Encode Sans', sans-serif
+
+.footer-text
+  font-size: 16px
+  font-weight: 500
+
+.footer-list
+  transition: 1s
+  margin-top: 0
+  list-style: none
+  padding: 0
+
+.footer-section ul li:not(:last-child)
+  margin-bottom: 0.875rem
+
+.footer-link
+  text-decoration: none
+  position: relative
+  color: $foggyColour
+
+.delay-300ms
+  transition: all 300ms linear
+.link-btn
+  background: $mainColour
+  width: 100%
+  border: none
+  text-decoration: none
+  padding: 0
+  cursor: pointer
+
+  .arrow-1
+    transition: all 300ms linear
+    cursor: pointer
+    position: relative
+    width: 10px
+    height: 20px
+    left: 20px
+    top: 5px
+
+  .arrow-1 div::before,
+  .arrow-1 div::after
+    content: ''
+    position: absolute
+    width: 10px
+    height: 2px
+    background: $foggyColour
+    right: 1px
+
+  .arrow-1 div::after
+    top: 6px
+    -webkit-transform: rotate(45deg)
+
+  .arrow-1 div::before
+    top: 12px
+    -webkit-transform: rotate(-45deg)
+
+.link-btn:hover
+  filter: drop-shadow(3px 3px 3px $shadow)
+
+/*.rotate-anim
+  animation-duration: 0.5s
+  animation-name: rotate-arrow
+  -webkit-transform: rotate(270deg)
+  @keyframes rotate-arrow
+  1%
+    -webkit-transform: rotate(90deg)
+  50%
+    -webkit-transform: rotate(180deg)
+  100%
+    -webkit-transform: rotate(270deg)*/
+
