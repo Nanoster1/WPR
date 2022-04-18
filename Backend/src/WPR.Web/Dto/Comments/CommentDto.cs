@@ -6,5 +6,6 @@ public record CommentDto
     Guid AuthorId,
     string AuthorName,
     string Content,
-    DateOnly CreatingDate
+    DateTime CreatingDateTime,
+    Guid? ParentId = null
 );

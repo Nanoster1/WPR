@@ -36,12 +36,7 @@ public class UserController : ControllerBase
     [HttpPost]
     public Guid Create(UserRegistrationDto model)
     {
-        var user = new User
-        {
-            Email = model.Email,
-            Login = model.Login,
-            Tag = model.Tag
-        };
+        var user = new User(Guid.Empty, model.Email, model.Login, model.Tag);
         return _userManager.Create(user, model.Password);
     }
 
@@ -60,7 +55,7 @@ public class UserController : ControllerBase
     ///     Удаляет пользователя по Id
     /// </summary>
     /// <param name="id">Id пользователя</param>
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     public void DeleteById(Guid id)
     {
         _userManager.DeleteById(id);
