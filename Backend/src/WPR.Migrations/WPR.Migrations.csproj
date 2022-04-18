@@ -5,28 +5,30 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>preview</LangVersion>
+        <EnablePreviewFeatures>true</EnablePreviewFeatures>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WPR.Data\WPR.Data.csproj" />
+        <ProjectReference Include="..\WPR.Data\WPR.Data.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="appsettings.json" />
-      <Content Include="appsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+        <None Remove="appsettings.json"/>
+        <Content Include="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

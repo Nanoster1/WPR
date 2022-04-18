@@ -15,13 +15,13 @@ public class CommentConfiguration : IEntityTypeConfiguration<CommentDbModel>
 
         builder.Property(model => model.Content).IsRequired();
         builder.Property(model => model.AuthorId).IsRequired();
-        builder.Property(model => model.CreatingDate).IsRequired();
+        builder.Property(model => model.CreatingDateTime).IsRequired();
         builder.Property(model => model.ProjectId).IsRequired();
 
         builder.HasOne<UserDbModel>()
             .WithMany()
             .HasForeignKey(model => model.AuthorId);
-        
+
         builder.HasOne<ProjectDbModel>()
             .WithMany()
             .HasForeignKey(model => model.ProjectId);

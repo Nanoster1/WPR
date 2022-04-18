@@ -38,9 +38,13 @@ namespace WPR.Migrations.Migrations
                         .HasColumnType("text")
                         .HasColumnName("content");
 
-                    b.Property<DateOnly>("CreatingDate")
-                        .HasColumnType("date")
-                        .HasColumnName("creating_date");
+                    b.Property<DateTime>("CreatingDateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("creating_date_time");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("parent_id");
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uuid")
