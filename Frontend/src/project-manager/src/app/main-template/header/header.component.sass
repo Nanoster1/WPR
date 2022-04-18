@@ -1,0 +1,44 @@
+$mainColour: #05386B
+$shadowColour: #888
+$foggyColour: #EDF5E1
+$fontSize: 24px
+.header-text
+  font-size: $fontSize
+  font-weight: 600
+
+.sing:hover
+  opacity: 60%
+
+.head
+  background: $mainColour
+  width: 100%
+  min-height: 60px
+  margin: 0
+  box-shadow: 0 1px 3px 0 $shadowColour
+  display: flex
+  flex-direction: row
+  align-content: center
+  z-index: 2
+  border-bottom-right-radius: 20px
+  transition: 300ms
+
+.border-blr-20
+  border-bottom-left-radius: 20px
+
+.sing
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 100px
+
+  .in
+    z-index: 4
+
+  .up
+    z-index: 3
+
+.tracing
+  border: 1px solid $foggyColour
+  padding: 5px
+  border-radius: 10px
+
