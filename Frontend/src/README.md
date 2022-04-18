@@ -1,2 +1,2 @@
 # ProjectManager_Front
-Web Project Manager Aplication
+Web Project Manager Application
