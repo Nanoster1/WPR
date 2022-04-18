@@ -1,0 +1,17 @@
+<header>
+  <div class="head" [ngClass]="!needBorder?'':'border-blr-20'" #header >
+    <div class="ico pt-pb-5"><a [href]=imgLink><img [src]=mainImg width="100" height="50"></a></div>
+    <div class="profile pt-pb-5 dis-i-b">
+      <div class="ml-mr-20 sing" #signIn>
+        <a [href]=signIn class="in">
+          <span class="header-text def hover-text">Sign in</span>
+        </a>
+      </div>
+      <div class="sing tracing">
+        <a [href]=signUp class="up">
+          <span class="header-text def hover-text">Sign up</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
