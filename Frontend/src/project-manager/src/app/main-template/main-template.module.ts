@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import {MainTemplateComponent} from "./main-template.component";
 import {FooterComponent} from "./footer/footer.component";
 import {HeaderComponent} from "./header/header.component";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import {HeaderComponent} from "./header/header.component";
   ],
   imports: [
     BrowserModule,
+    RouterModule,
   ],
   providers: [],
   exports: [
