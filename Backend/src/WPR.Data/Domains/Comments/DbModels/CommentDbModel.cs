@@ -15,7 +15,6 @@ public class CommentDbModel : IDbModel<CommentDbModel, Comment>
     {
         return new CommentDbModel
         {
-            Id = businessModel.Id,
             Content = businessModel.Content,
             AuthorId = businessModel.AuthorId,
             ParentId = businessModel.ParentId,

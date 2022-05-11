@@ -15,7 +15,6 @@ public class ProjectDbModel : IDbModel<ProjectDbModel, Project>
     {
         return new ProjectDbModel
         {
-            Id = businessModel.Id,
             Name = businessModel.Name,
             Rating = businessModel.Rating,
             AuthorId = businessModel.AuthorId,

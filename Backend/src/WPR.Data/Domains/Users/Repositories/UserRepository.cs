@@ -32,10 +32,12 @@ public class UserRepository : IUserRepository
         return new User(model.Id, model.Email, model.Login, model.Tag);
     }
 
-    public User[] GetByIds(Guid[] ids)
+    public User[] GetManyById(Guid[] ids, int startIndex, int quantity)
     {
         return _context.Users
             .Where(model => ids.Contains(model.Id))
+            .Skip(startIndex)
+            .Take(quantity)
             .Select(model => model.ToBusinessModel())
             .ToArray();
     }

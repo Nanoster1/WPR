@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using WPR.Core.Domains.Comments.Interfaces;
 using WPR.Core.Domains.Links.Interfaces;
 using WPR.Core.Domains.Links.Models;
 using WPR.Core.Domains.Projects.Interfaces;
@@ -76,7 +75,7 @@ public class ProjectController : ControllerBase
     [HttpPut]
     public void Update(ProjectCreatingDto project)
     {
-        _projectManager.Update(project.Project, project.Links);
+        _projectManager.Update(project.Project, project.Links ?? Array.Empty<Link>());
     }
 
     /// <summary>

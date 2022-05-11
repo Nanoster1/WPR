@@ -20,11 +20,13 @@ public class ProjectRepository : IProjectRepository
         return model.ToBusinessModel();
     }
 
-    public Project[] GetByUserId(Guid id)
+    public Project[] GetByUserId(Guid id, int startIndex, int quantity)
     {
         return _context.Projects
             .AsNoTracking()
             .Where(model => model.AuthorId == id)
+            .Skip(startIndex)
+            .Take(quantity)
             .Select(model => model.ToBusinessModel())
             .ToArray();
     }

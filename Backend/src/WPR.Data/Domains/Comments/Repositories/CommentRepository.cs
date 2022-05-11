@@ -20,22 +20,26 @@ public class CommentRepository : ICommentRepository
         return model.ToBusinessModel();
     }
 
-    public Comment[] GetByAuthorId(Guid id)
+    public Comment[] GetByAuthorId(Guid id, int startIndex, int quantity)
     {
-        return _context.Comments
+        var models = _context.Comments
             .AsNoTracking()
             .Where(model => model.AuthorId == id)
-            .Select(model => model.ToBusinessModel())
-            .ToArray();
+            .Skip(startIndex);
+        return quantity < 0
+            ? models.Select(model => model.ToBusinessModel()).ToArray()
+            : models.Take(quantity).Select(model => model.ToBusinessModel()).ToArray();
     }
 
-    public Comment[] GetByProjectId(Guid id)
+    public Comment[] GetByParentId(Guid id, int startIndex, int quantity)
     {
-        return _context.Comments
+        var models = _context.Comments
             .AsNoTracking()
-            .Where(model => model.ProjectId == id)
-            .Select(model => model.ToBusinessModel())
-            .ToArray();
+            .Where(model => model.ParentId == id)
+            .Skip(startIndex);
+        return quantity < 0
+            ? models.Select(model => model.ToBusinessModel()).ToArray()
+            : models.Take(quantity).Select(model => model.ToBusinessModel()).ToArray();
     }
 
     public Guid Create(Comment comment)
@@ -59,6 +63,17 @@ public class CommentRepository : ICommentRepository
     {
         var model = GetModelById(id);
         _context.Comments.Remove(model);
+    }
+
+    public Comment[] GetByProjectId(Guid id, int startIndex, int quantity)
+    {
+        var models = _context.Comments
+            .AsNoTracking()
+            .Where(model => model.ProjectId == id && model.ParentId == default)
+            .Skip(startIndex);
+        return quantity < 0
+            ? models.Select(model => model.ToBusinessModel()).ToArray()
+            : models.Take(quantity).Select(model => model.ToBusinessModel()).ToArray();
     }
 
     private CommentDbModel GetModelById(Guid id, bool isTracking = false)

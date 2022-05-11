@@ -17,5 +17,7 @@ public class Project
     public string ShortDesc { get; set; }
     public string LongDesc { get; set; }
     public int Rating { get; set; }
+    public int ScoresCount { get; set; }
+    public int NormalizeRating() => Rating / ScoresCount;
     public Guid AuthorId { get; set; }
 }

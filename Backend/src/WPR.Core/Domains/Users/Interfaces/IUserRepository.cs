@@ -6,7 +6,7 @@ public interface IUserRepository
 {
     User GetById(Guid id);
     User GetByTag(string tag);
-    User[] GetByIds(Guid[] ids);
+    User[] GetManyById(Guid[] ids, int startIndex, int quantity);
     Guid Create(User user, string password);
     void Update(User user);
     void DeleteById(Guid id);

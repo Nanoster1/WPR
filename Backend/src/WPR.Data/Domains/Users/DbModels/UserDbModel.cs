@@ -15,7 +15,6 @@ public class UserDbModel : IDbModel<UserDbModel, User>
     {
         return new UserDbModel
         {
-            Id = businessModel.Id,
             Email = businessModel.Email,
             Login = businessModel.Login,
             Tag = businessModel.Tag

@@ -31,9 +31,9 @@ public class UserManager : IUserManager
         return _userRepository.GetByTag(tag);
     }
 
-    public User[] GetByIds(Guid[] ids)
+    public User[] GetManyById(Guid[] ids, int startIndex = 0, int quantity = -1)
     {
-        return _userRepository.GetByIds(ids);
+        return _userRepository.GetManyById(ids, startIndex, quantity);
     }
 
     public Guid Create(User user, string password)

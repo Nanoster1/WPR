@@ -8,8 +8,8 @@ namespace WPR.Core.Domains.Links.Services;
 public class LinkManager : ILinkManager
 {
     private readonly ILinkRepository _linkRepository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly LinkValidator _linkValidator;
+    private readonly IUnitOfWork _unitOfWork;
 
     public LinkManager(ILinkRepository linkRepository, IUnitOfWork unitOfWork, LinkValidator linkValidator)
     {
@@ -23,14 +23,14 @@ public class LinkManager : ILinkManager
         return _linkRepository.GetById(id);
     }
 
-    public Link[] GetByProjectId(Guid id)
+    public Link[] GetByProjectId(Guid id, int startIndex = 0, int quantity = -1)
     {
-        return _linkRepository.GetByProjectId(id);
+        return _linkRepository.GetByProjectId(id, startIndex, quantity);
     }
 
-    public IList<Guid> Create(Link[] links)
+    public Guid[] Create(Link[] links)
     {
-        foreach (var link in links) _linkValidator.ValidateAndThrow(link);  
+        foreach (var link in links) _linkValidator.ValidateAndThrow(link);
         var ids = _linkRepository.Create(links);
         _unitOfWork.SaveChanges();
         return ids;

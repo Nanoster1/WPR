@@ -20,11 +20,13 @@ public class LinkRepository : ILinkRepository
         return model.ToBusinessModel();
     }
 
-    public Link[] GetByProjectId(Guid id)
+    public Link[] GetByProjectId(Guid id, int startIndex, int quantity)
     {
         return _context.Links
             .AsNoTracking()
             .Where(model => model.ProjectId == id)
+            .Skip(startIndex)
+            .Take(quantity)
             .Select(model => model.ToBusinessModel())
             .ToArray();
     }

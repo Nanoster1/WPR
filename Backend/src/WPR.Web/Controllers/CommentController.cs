@@ -23,23 +23,26 @@ public class CommentController : ControllerBase
     ///     Возвращает комментарии по Id проекта
     /// </summary>
     /// <param name="id">Id проекта</param>
+    /// <param name="startIndex">Начальный индекс выдачи комментариев</param>
+    /// <param name="quantity">Кол-во комментариев</param>
     /// <returns>Массив моделей комментария</returns>
-    [HttpGet("proj/{id:guid}")]
-    public CommentDto[] GetByProjectId(Guid id)
+    [HttpGet("proj/{id:guid}:{startIndex:int}:{quantity:int}")]
+    public CommentDto[] GetByProjectId(Guid id, int startIndex, int quantity)
     {
         var models = _commentManager.GetByProjectId(id);
-        var users = _userManager.GetByIds(models.Select(comment => comment.AuthorId).ToArray());
+        var users = _userManager.GetManyById(
+            models.Select(comment => comment.AuthorId).ToArray(),
+            startIndex, quantity);
         var i = 0;
-        return models.Select(comment =>
-        {
-            return new CommentDto(
+        return models
+            .Select(comment => new CommentDto(
                 comment.Id,
                 comment.AuthorId,
                 users[i++].Login,
                 comment.Content,
                 comment.CreatingDateTime,
-                comment.ParentId);
-        }).ToArray();
+                comment.ParentId))
+            .ToArray();
     }
 
     /// <summary>
@@ -51,10 +54,11 @@ public class CommentController : ControllerBase
     public CommentDto GetById(Guid id)
     {
         var model = _commentManager.GetById(id);
+        var user = _userManager.GetById(model.AuthorId);
         return new CommentDto(
             model.Id,
             model.AuthorId,
-            string.Empty,
+            user.Login,
             model.Content,
             model.CreatingDateTime);
     }
@@ -64,14 +68,38 @@ public class CommentController : ControllerBase
     /// </summary>
     /// <param name="id">Id автора</param>
     /// <returns>Массив моделей комментария</returns>
-    [HttpGet("usr/{id:guid}")]
-    public CommentDto[] GetByAuthorId(Guid id)
+    [HttpGet("usr/{id:guid}:{startIndex:int}:{quantity:int}")]
+    public CommentDto[] GetByAuthorId(Guid id, int startIndex, int quantity)
     {
         var models = _commentManager.GetByAuthorId(id);
+        var users = _userManager.GetManyById(models.Select(comment => comment.AuthorId).ToArray());
+        var i = 0;
         return models.Select(comment => new CommentDto(
                 comment.Id,
                 comment.AuthorId,
-                string.Empty,
+                users[i++].Login,
+                comment.Content,
+                comment.CreatingDateTime))
+            .ToArray();
+    }
+
+    /// <summary>
+    ///     Возвращает массив комментариев для родительского комментария
+    /// </summary>
+    /// <param name="id">Id родительского комментария</param>
+    /// <param name="startIndex">Начальный индекс</param>
+    /// <param name="quantity">Кол-во комментариев</param>
+    /// <returns></returns>
+    [HttpGet("parent/{id:guid}:{startIndex:int}:{quantity:int}")]
+    public CommentDto[] GetByParentId(Guid id, int startIndex, int quantity)
+    {
+        var models = _commentManager.GetByParentId(id);
+        var users = _userManager.GetManyById(models.Select(comment => comment.AuthorId).ToArray());
+        var i = 0;
+        return models.Select(comment => new CommentDto(
+                comment.Id,
+                comment.AuthorId,
+                users[i++].Login,
                 comment.Content,
                 comment.CreatingDateTime))
             .ToArray();

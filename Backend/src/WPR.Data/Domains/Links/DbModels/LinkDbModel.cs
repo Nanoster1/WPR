@@ -16,7 +16,6 @@ public class LinkDbModel : IDbModel<LinkDbModel, Link>
     {
         return new LinkDbModel
         {
-            Id = businessModel.Id,
             Title = businessModel.Title,
             Type = businessModel.Type,
             Url = businessModel.Url,

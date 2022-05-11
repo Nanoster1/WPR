@@ -6,5 +6,5 @@ namespace WPR.Web.Dto.Projects;
 public record ProjectCreatingDto
 (
     Project Project,
-    Link[] Links
+    Link[]? Links
 );
