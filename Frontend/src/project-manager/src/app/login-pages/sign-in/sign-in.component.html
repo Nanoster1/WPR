@@ -1,11 +1,18 @@
 <div class="main">
   <div class="sign">
-    <h1 class="title">
-      Welcome to WPR!
-    </h1>
-    <input>
-    <input>
-    <button>
+    <div class="title" id="#title">
+      <span *ngFor="let item of text.split('\n')" class="">
+        {{item}}
+      </span>
+    </div>
+    <input
+      type="email"
+      placeholder="Email or tag"
+    >
+    <input
+      placeholder="Password"
+    >
+    <button class="sign-in">
 
     </button>
     <div class="other-sign">
