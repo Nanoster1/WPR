@@ -4,8 +4,9 @@ import {
   EventEmitter, Inject,
   OnInit,
 } from '@angular/core';
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 import Size from "../../models/Size";
-import {Observable} from "rxjs";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-main-template',
@@ -17,10 +18,12 @@ export class MainTemplateComponent implements OnInit {
   private _scrollPosition: number = 0;
   private _menuIsOpen: boolean = false;
   private _headerSize: Size = new Size(0, 0);
+  hostUrl = environment.projectApi;
+  project:any;
+  constructor(@Inject(ChangeDetectorRef) private changeDetection: ChangeDetectorRef,private http: HttpClient) {
 
-  constructor(@Inject(ChangeDetectorRef) private changeDetection: ChangeDetectorRef) {}
-
-  onContentScrolled(changeDetection:ChangeDetectorRef) {
+  }
+  onContentScrolled(changeDetection: ChangeDetectorRef) {
     if (window.scrollY - this._scrollPosition < 0 && !this.isHeaderVisible) {
       this.isHeaderVisible = true;
       changeDetection.markForCheck();
@@ -51,7 +54,7 @@ export class MainTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.changeDetection)
-    window.addEventListener('scroll', (event)=> this.onContentScrolled(this.changeDetection), true);
+    window.addEventListener('scroll', (event) => this.onContentScrolled(this.changeDetection), true);
     this.menuEmitter.subscribe(value => this._menuIsOpen = value);
     this.headerHeightEmitter.subscribe(value => this._headerSize = new Size(this._headerSize.width, value));
     this.headerWidthEmitter.subscribe(value => this._headerSize = new Size(this._headerSize.width, value));

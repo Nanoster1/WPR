@@ -5,11 +5,15 @@
     <app-sidebar-menu [style.top]="headerSize.height + 'px'"
                       (menuObserver)=menuEmitter.emit($event) class="po-r"></app-sidebar-menu>
     <main>
-      <h1 class="test">hello i am gay i wanna be lion but i am spike</h1>
+      <router-outlet>
+
+      </router-outlet>
+      <h1 class="test">{{hostUrl}}</h1>
       <h1 class="test">hello i am gay i wanna be lion but i am spike</h1>
       <h1 class="test">hello i am gay i wanna be lion but i am spike</h1>
     </main>
   </div>
+
   <app-footer class="flex-0-0"></app-footer>
 </div>
 
