@@ -23,14 +23,6 @@ export class MainTemplateComponent implements OnInit {
   constructor(@Inject(ChangeDetectorRef) private changeDetection: ChangeDetectorRef,private http: HttpClient) {
 
   }
-  printProject(){
-    this.http.get(environment.projectApi).subscribe(
-      (value)=> {
-        this.project.value
-        console.log(value);
-      }
-    );
-  }
   onContentScrolled(changeDetection: ChangeDetectorRef) {
     if (window.scrollY - this._scrollPosition < 0 && !this.isHeaderVisible) {
       this.isHeaderVisible = true;

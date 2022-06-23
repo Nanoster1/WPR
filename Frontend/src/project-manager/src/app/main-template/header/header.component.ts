@@ -20,10 +20,7 @@ import {isSmallScreen} from "../../../services/ScreenService";
 
 export class HeaderComponent implements OnDestroy, OnInit, AfterViewInit {
 
-  imgLink = "#";
   mainImg = "../../../assets/images/logo.png"
-  signIn = "#";
-  signUp = "#"
   private minWidth = 768;
   private resizeObservable: Observable<Event> = fromEvent(window, 'resize')
   private resizeSubscription: Subscription = new Subscription()
