@@ -17,15 +17,7 @@ public class ProjectRepository : IProjectRepository
     public Project GetById(Guid id)
     {
         var model = GetModelById(id);
-        return new Project
-        {
-            Id = model.Id,
-            Name = model.Name,
-            Rating = model.Rating,
-            AuthorId = model.AuthorId,
-            LongDesc = model.LongDesc,
-            ShortDesc = model.ShortDesc
-        };
+        return model.ToBusinessModel();
     }
 
     public Project[] GetByUserId(Guid id)
@@ -33,28 +25,13 @@ public class ProjectRepository : IProjectRepository
         return _context.Projects
             .AsNoTracking()
             .Where(model => model.AuthorId == id)
-            .Select(model => new Project
-            {
-                Id = model.Id,
-                Name = model.Name,
-                Rating = model.Rating,
-                AuthorId = model.AuthorId,
-                LongDesc = model.LongDesc,
-                ShortDesc = model.ShortDesc
-            })
+            .Select(model => model.ToBusinessModel())
             .ToArray();
     }
 
     public Guid Create(Project project)
     {
-        var model = new ProjectDbModel
-        {
-            Name = project.Name,
-            Rating = project.Rating,
-            AuthorId = project.AuthorId,
-            LongDesc = project.LongDesc,
-            ShortDesc = project.ShortDesc
-        };
+        var model = ProjectDbModel.FromBusinessModel(project);
         _context.Projects.Add(model);
         return model.Id;
     }
@@ -65,6 +42,8 @@ public class ProjectRepository : IProjectRepository
         model.Name = project.Name;
         model.Rating = project.Rating;
         model.AuthorId = project.AuthorId;
+        model.LongDesc = project.LongDesc;
+        model.ShortDesc = project.ShortDesc;
     }
 
     public void DeleteById(Guid id)

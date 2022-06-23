@@ -18,7 +18,7 @@ public class CommentValidator : AbstractValidator<Comment>
         RuleFor(comment => comment.AuthorId)
             .NotEmpty();
 
-        RuleFor(comment => comment.CreatingDate)
+        RuleFor(comment => comment.CreatingDateTime)
             .NotEmpty();
 
         RuleFor(comment => comment.ProjectId)

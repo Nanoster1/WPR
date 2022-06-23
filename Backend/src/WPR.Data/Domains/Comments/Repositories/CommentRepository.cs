@@ -17,14 +17,7 @@ public class CommentRepository : ICommentRepository
     public Comment GetById(Guid id)
     {
         var model = GetModelById(id);
-        return new Comment
-        {
-            Id = model.Id,
-            Content = model.Content,
-            AuthorId = model.AuthorId,
-            CreatingDate = model.CreatingDate,
-            ProjectId = model.ProjectId
-        };
+        return model.ToBusinessModel();
     }
 
     public Comment[] GetByAuthorId(Guid id)
@@ -32,14 +25,7 @@ public class CommentRepository : ICommentRepository
         return _context.Comments
             .AsNoTracking()
             .Where(model => model.AuthorId == id)
-            .Select(model => new Comment
-            {
-                Id = model.Id,
-                Content = model.Content,
-                AuthorId = model.AuthorId,
-                CreatingDate = model.CreatingDate,
-                ProjectId = model.ProjectId
-            })
+            .Select(model => model.ToBusinessModel())
             .ToArray();
     }
 
@@ -48,26 +34,13 @@ public class CommentRepository : ICommentRepository
         return _context.Comments
             .AsNoTracking()
             .Where(model => model.ProjectId == id)
-            .Select(model => new Comment
-            {
-                Id = model.Id,
-                Content = model.Content,
-                AuthorId = model.AuthorId,
-                CreatingDate = model.CreatingDate,
-                ProjectId = model.ProjectId
-            })
+            .Select(model => model.ToBusinessModel())
             .ToArray();
     }
 
     public Guid Create(Comment comment)
     {
-        var model = new CommentDbModel
-        {
-            Content = comment.Content,
-            AuthorId = comment.AuthorId,
-            CreatingDate = comment.CreatingDate,
-            ProjectId = comment.ProjectId
-        };
+        var model = CommentDbModel.FromBusinessModel(comment);
         _context.Add(model);
         return model.Id;
     }
@@ -77,8 +50,9 @@ public class CommentRepository : ICommentRepository
         var model = GetModelById(comment.Id, true);
         model.Content = comment.Content;
         model.AuthorId = comment.AuthorId;
-        model.CreatingDate = comment.CreatingDate;
+        model.CreatingDateTime = comment.CreatingDateTime;
         model.ProjectId = comment.ProjectId;
+        model.ParentId = comment.ParentId;
     }
 
     public void DeleteById(Guid id)

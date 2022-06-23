@@ -17,14 +17,7 @@ public class LinkRepository : ILinkRepository
     public Link GetById(Guid id)
     {
         var model = GetModelById(id);
-        return new Link
-        {
-            Id = model.Id,
-            Title = model.Title,
-            Url = model.Url,
-            ProjectId = model.ProjectId,
-            Type = model.Type
-        };
+        return model.ToBusinessModel();
     }
 
     public Link[] GetByProjectId(Guid id)
@@ -32,40 +25,20 @@ public class LinkRepository : ILinkRepository
         return _context.Links
             .AsNoTracking()
             .Where(model => model.ProjectId == id)
-            .Select(model => new Link
-            {
-                Id = model.Id,
-                Title = model.Title,
-                Url = model.Url,
-                ProjectId = model.ProjectId,
-                Type = model.Type
-            })
+            .Select(model => model.ToBusinessModel())
             .ToArray();
     }
 
     public Guid Create(Link link)
     {
-        var model = new LinkDbModel
-        {
-            Id = link.Id,
-            Title = link.Title,
-            Url = link.Url,
-            ProjectId = link.ProjectId,
-            Type = link.Type
-        };
+        var model = LinkDbModel.FromBusinessModel(link);
         _context.Links.Add(model);
         return model.Id;
     }
 
     public Guid[] Create(Link[] links)
     {
-        var models = links.Select(link => new LinkDbModel
-        {
-            Title = link.Title,
-            Type = link.Type,
-            Url = link.Url,
-            ProjectId = link.ProjectId
-        }).ToList();
+        var models = links.Select(LinkDbModel.FromBusinessModel).ToArray();
         _context.Links.AddRange(models);
         return models.Select(model => model.Id).ToArray();
     }

@@ -7,12 +7,13 @@ namespace WPR.Core.Domains.Users.Services;
 
 public class UserManager : IUserManager
 {
+    private readonly PasswordValidator _passwordValidator;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
     private readonly UserValidator _userValidator;
-    private readonly PasswordValidator _passwordValidator;
-    
-    public UserManager(IUserRepository userRepository, IUnitOfWork unitOfWork, UserValidator userValidator, PasswordValidator passwordValidator)
+
+    public UserManager(IUserRepository userRepository, IUnitOfWork unitOfWork, UserValidator userValidator,
+        PasswordValidator passwordValidator)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
@@ -28,6 +29,11 @@ public class UserManager : IUserManager
     public User GetByTag(string tag)
     {
         return _userRepository.GetByTag(tag);
+    }
+
+    public User[] GetByIds(Guid[] ids)
+    {
+        return _userRepository.GetByIds(ids);
     }
 
     public Guid Create(User user, string password)

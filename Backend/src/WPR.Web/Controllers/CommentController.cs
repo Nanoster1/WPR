@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WPR.Core.Domains.Comments.Interfaces;
 using WPR.Core.Domains.Comments.Models;
+using WPR.Core.Domains.Users.Interfaces;
 using WPR.Web.Dto.Comments;
 
 namespace WPR.Web.Controllers;
@@ -10,10 +11,12 @@ namespace WPR.Web.Controllers;
 public class CommentController : ControllerBase
 {
     private readonly ICommentManager _commentManager;
+    private readonly IUserManager _userManager;
 
-    public CommentController(ICommentManager commentManager)
+    public CommentController(ICommentManager commentManager, IUserManager userManager)
     {
         _commentManager = commentManager;
+        _userManager = userManager;
     }
 
     /// <summary>
@@ -25,14 +28,17 @@ public class CommentController : ControllerBase
     public CommentDto[] GetByProjectId(Guid id)
     {
         var models = _commentManager.GetByProjectId(id);
+        var users = _userManager.GetByIds(models.Select(comment => comment.AuthorId).ToArray());
+        var i = 0;
         return models.Select(comment =>
         {
             return new CommentDto(
                 comment.Id,
                 comment.AuthorId,
-                string.Empty,
+                users[i++].Login,
                 comment.Content,
-                comment.CreatingDate);
+                comment.CreatingDateTime,
+                comment.ParentId);
         }).ToArray();
     }
 
@@ -50,7 +56,7 @@ public class CommentController : ControllerBase
             model.AuthorId,
             string.Empty,
             model.Content,
-            model.CreatingDate);
+            model.CreatingDateTime);
     }
 
     /// <summary>
@@ -67,7 +73,7 @@ public class CommentController : ControllerBase
                 comment.AuthorId,
                 string.Empty,
                 comment.Content,
-                comment.CreatingDate))
+                comment.CreatingDateTime))
             .ToArray();
     }
 

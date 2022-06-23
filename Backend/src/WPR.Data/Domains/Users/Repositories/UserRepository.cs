@@ -9,7 +9,7 @@ public class UserRepository : IUserRepository
 {
     private readonly WprDbContext _context;
     private readonly IPasswordHashProvider _passwordHashProvider;
-    
+
     public UserRepository(WprDbContext context, IPasswordHashProvider passwordHashProvider)
     {
         _context = context;
@@ -19,13 +19,7 @@ public class UserRepository : IUserRepository
     public User GetById(Guid id)
     {
         var model = GetModelById(id);
-        return new User
-        {
-            Id = model.Id,
-            Email = model.Email,
-            Login = model.Login,
-            Tag = model.Tag
-        };
+        return model.ToBusinessModel();
     }
 
     public User GetByTag(string tag)
@@ -35,13 +29,15 @@ public class UserRepository : IUserRepository
         if (model == null)
             throw new NullReferenceException();
 
-        return new User
-        {
-            Id = model.Id,
-            Email = model.Email,
-            Login = model.Login,
-            Tag = model.Tag
-        };
+        return new User(model.Id, model.Email, model.Login, model.Tag);
+    }
+
+    public User[] GetByIds(Guid[] ids)
+    {
+        return _context.Users
+            .Where(model => ids.Contains(model.Id))
+            .Select(model => model.ToBusinessModel())
+            .ToArray();
     }
 
     public void Update(User user)
@@ -60,15 +56,10 @@ public class UserRepository : IUserRepository
 
     public Guid Create(User user, string password)
     {
-        var (hash, salt) = _passwordHashProvider.CreateHash(password); 
-        var model = new UserDbModel
-        {
-            Login = user.Login,
-            Email = user.Email,
-            Tag = user.Tag,
-            PasswordHash = hash,
-            Salt = salt
-        };
+        var (hash, salt) = _passwordHashProvider.CreateHash(password);
+        var model = UserDbModel.FromBusinessModel(user);
+        model.Salt = salt;
+        model.PasswordHash = hash;
         _context.Users.Add(model);
         return model.Id;
     }
